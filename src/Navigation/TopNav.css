@@ -1,0 +1,105 @@
+
+  .topnav {
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height:80px;
+    position: static;
+    z-index: 1000;
+
+  }
+ 
+  .topnav a {
+    vertical-align: middle;
+    float: right;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 13px 16px;
+    text-decoration: none;
+    line-height: 40px;
+    font-size: 2.5vmin;
+
+  }
+  
+  .topnav a:hover {
+    background-color: #ddd;
+    color: black;
+
+  }
+  
+  .topnav a.active {
+    background-color: #4CAF50;
+    color: white;
+    border-top-right-radius: 10% 30%;  
+    border-bottom-right-radius: 10% 30%;
+    transition: font-size 1s ease-in-out, transform 1s ease-in-out;
+    width: 100px;
+    font-size: 40px;
+
+    }
+  
+  .topnav a.active:hover {
+    font-size: 25px;
+    transform: scaleX(1.2);
+  }
+
+
+  .topnav .icon {
+    display: none;
+  }
+
+  .topnav .icon>svg {
+    font-size: 60px;
+  }
+
+  .topnav .feedbacks{
+      background-color: rgba(55, 180, 211, 0.6);
+      margin-right: 5px;
+  }
+  
+  .pullsing{
+    transition: 1s;
+    transform: scale(1.1);
+  }
+  .nothing{
+    transform: none;
+  }
+
+  .responsive{
+    margin-top:40px;
+    background: black;
+    width: 100%;
+    position:absolute;
+    top:50px; 
+    z-index:1000;
+  }
+  .responsive a{
+    display:block;
+    float:none;
+    font-size: 25px;
+  }
+  @media screen and (max-width: 600px) {
+    .topnav2 a:not(:last-child) {display: none;}
+    .topnav2 a.icon {
+      float: right;
+      display: block;
+    }
+  }
+  
+  @media screen and (max-width: 800px) {
+    .topnav{position:none}
+    .topnav.responsive {position: relative; background-color:black;}
+    .topnav.responsive .icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin-top:'50px';
+
+    }
+    .topnav.responsive a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+  }

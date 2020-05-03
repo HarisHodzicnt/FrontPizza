@@ -1,0 +1,50 @@
+.orderForm{
+    flex:50%;
+}
+
+.gallery{
+    flex:50%;
+    flex-direction: row;
+}
+
+.image{
+    display: inline-block;
+    width: 45%;
+    float:left;
+    margin: 10px;
+}
+
+
+@media screen and (min-width: 800px) {
+    .orderForm{
+        font-size: 4vmin;
+        margin:'0 auto';
+    }
+    .aboutImage>img{
+        width: 60%;
+        }
+        .flex{
+            flex-direction:'column-reverse'
+        }
+  }
+  
+  @media screen and (max-width: 800px) {
+    .orderForm{
+        font-size: 4vmin;
+        margin:'0 auto';
+        flex: 100%;
+    }
+    .flex{
+        flex-direction:'column-reverse'
+    }
+    .orderForm>h2{
+        margin-top:70px
+    }
+   .aboutText{
+       font-size: 3vmin;
+   }
+   .aboutImage>img{
+    width: 90%;
+    }
+    
+}
