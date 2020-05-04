@@ -89,11 +89,12 @@ const OrderForm=(props)=>{
           }
 
           for (var prop in selectedItem) {
+              console.log(selectedItem)
 
               switch (prop) {
               
 }
-                 if (prop == "Photo" || prop == "PhotoPath") {
+                 if (prop == "Photo" || prop == "PhotoPath" || prop=="Material") {
                          continue;
                      }
                   else if (selectedItem[prop] == "" || selectedItem[prop] == null) {
@@ -105,11 +106,6 @@ const OrderForm=(props)=>{
                       document.getElementById("Quantity").focus();
                       errorMess();
                       return;
-                 }
-                 else if (!selectedItem?.Quantity) {
-                     document.getElementById("Quantity").focus();
-                     errorMess();
-                     return;
                  }
                  else if (!selectedItem?.Address) {
                      document.getElementById("Address").focus();
@@ -124,7 +120,6 @@ const OrderForm=(props)=>{
                   }   
                   
           }
-          console.log(selectedItem)
 
           if (Object.keys(selectedItem).length !== 0) {
               props.setCartFn(selectedItem)
@@ -133,6 +128,7 @@ const OrderForm=(props)=>{
               setTimeout(() => {
                   setSuccesMess(false);
               }, 1200)
+              return;
           }
               
   
@@ -231,7 +227,7 @@ const OrderForm=(props)=>{
                 </h2>
                 <div style={{marginTop:'80px', textAlign:'center'}}>
                 {
-                    items?.map(item=><Pizza item={item}  addToCheckOut={(item)=>{props.setCartFn(item)}}  setPizza={(item)=>{setItem(item)}} image={item?.PhotoPath ? `${apiImage}/Images/${item?.PhotoPath}` : "https://via.placeholder.com/640x360"}/>)
+                    items?.map(item=><Pizza item={item}   setPizza={(item)=>{setItem(item)}} image={item?.PhotoPath ? `${apiImage}/Images/${item?.PhotoPath}` : "https://via.placeholder.com/640x360"}/>)
                 } 
                 </div>
   

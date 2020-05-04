@@ -40,22 +40,20 @@ export default function Pizza(props) {
         </CardContent>
       </CardActionArea>
       <CardActions >
-        {
-          props.admin ?  <div>
-                          <Button size="small" color="primary" style={{margin:'0 auto'}} onClick={()=>props.delete(props.itemId)}>
-                                    Delete
+              {
+                  props.admin ? <div>
+                      <Button size="small" color="primary" style={{ margin: '0 auto' }} onClick={() => props.delete(props.itemId)}>
+                          Delete
                                   </Button>
-                            <Button size="small" color="primary" style={{margin:'0 auto'}} onClick={()=>props.edit(props.itemId)}>
-                                    Edit
+                      <Button size="small" color="primary" style={{ margin: '0 auto' }} onClick={() => props.edit(props.itemId)}>
+                          Edit
                             </Button>
-                          </div>   :
-                          <div>
-                          <Button size="small" color="primary" style={{ margin: '0 auto', background: 'rgba(169,169,169,0.4)', padding:'10px'}} onClick={()=>props.setPizza(props.item)}>
+                  </div> :
+                      <div style={{margin:'0 auto'}}>
+                          <Button size="small" color="primary" style={{ padding:'10px 30px', background: 'rgba(169,169,169,0.4)'}} onClick={()=>props.setPizza(props.item)}>
                                     Select
-                                  </Button>
-                                  <Button size="small" color="primary" style={{margin:'0 auto'}} onClick={()=>props.addToCheckOut(props.item)}>
-                                    Add to Checkout
-                                  </Button>
+                          </Button>
+                
                         </div> 
                        
         }

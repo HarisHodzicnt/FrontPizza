@@ -7,7 +7,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import {api} from './environment'
-import TextField from '@material-ui/core/TextField';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -15,14 +14,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function Chart(props) {
 
-  let allOrders=JSON.parse(sessionStorage.getItem("cart"))
+    let allOrders = JSON.parse(sessionStorage.getItem("cart"))
   const [message, setMessage]=useState(false);
   const [unlock, setUnlock] = useState(false);
   const handleSubmit=async ()=>{
-      console.log(allOrders);
 
-      if(allOrders!=null)
+   if(allOrders!=null)
       {
+       
+
       let orderId=0;
        await fetch(`${api}/order`,{
             method:'POST',
@@ -31,12 +31,13 @@ export default function Chart(props) {
                     },
             mode:'cors',
             body:JSON.stringify({Id:0, Address:"" })
-            }).then(x=>x.json()).then(y=>orderId=y.id);
+       }).then(x => x.json()).then(y => orderId = y.id);
 
+      
 
-        allOrders.map(async order=>{
-          order.OrderId = orderId==0 ? 0 : orderId;
-
+        allOrders.map(async (order,index)=>{
+            order.OrderId = orderId == 0 ? 0 : parseInt(orderId);
+            order.Price = parseInt(order.Price);
           await fetch(`${api}/order/orderDetails`,{
             method:'POST',
             headers:{
@@ -95,7 +96,7 @@ export default function Chart(props) {
       >
         {
           allOrders ? <div>
-                                  <DialogTitle id="alert-dialog-slide-title" style={{textAlign:'center'}}><p>{headerToDisplay}</p></DialogTitle>
+                                  <DialogTitle id="alert-dialog-slide-title" style={{textAlign:'center'}}><h1>{headerToDisplay}</h1></DialogTitle>
                                   {
                                     !props.admin ?  <p style={{width:'90%', margin:'0 auto', fontSize:'19px', marginTop:'-36px', textAlign:'right'}}>ps. 20$ + take the discount of 10%</p> : false
                                   }
@@ -106,7 +107,8 @@ export default function Chart(props) {
         <DialogContent style={{minWidth:'60vmin'}}>
           <DialogContentText id="alert-dialog-slide-description">
                {
-                   allOrders ? allOrders.map((item, index)=>{
+                          allOrders ? allOrders.map((item, index) => {
+
                                                         if(numberOrder.indexOf(item.OrderId)==-1)
                                                            numberOrder.push(item.OrderId)
 
@@ -117,28 +119,10 @@ export default function Chart(props) {
                                                                   <h3 style={{width:'70%', textAlign:'left'}}>{item?.Name}</h3>
                                                               <div >
                                                                   <div>
-                                                                      <span><b>Size: </b> {item?.Size}</span>
-                                                                      <span style={{marginLeft:'15px'}}><b>Quantity: </b> {item?.Quantity==null ? 1 : item?.Quantity}</span>
+                                                                      <span><b>Size: </b> {item.Size}</span>
+                                                                      <span style={{ marginLeft: '15px' }}><b>Quantity: </b> {item.Quantity}</span>
                                                                   </div>
-                                                                  {
-                                                                      (item.Address && !props.admin) ? <p><b>Address:</b> {item?.Address}</p> :
-                                                                                      <TextField
-                                                                                          id="Address"
-                                                                                          label="Adress to be delivered"
-                                                                                          value={item.Address}
-                                                                                          style={{ marginTop: '20px' }}
-                                                                                          fullWidth
-                                                                                          placeholder="Insert Text"
-                                                                              helperText="Trg play 1/29 Boston #444"
-                                                                              onChange={(e) => { item.Address=e.target.value }}
-                                                                                          margin="normal"
-                                                                                          InputLabelProps={{
-                                                                                              shrink: true,
-                                                                                          }}
-                                                                                          variant="outlined"
-                                                                                      />
-
-                                                                  }
+                                                               
                                                                       <p><b>Aditional Comment: </b><br/> {item?.Aditional}</p>
 
                                                               </div>
@@ -185,7 +169,7 @@ export default function Chart(props) {
               
         </DialogActions>
         {
-                    message ? <div style={{marginTop:'15px', borderBottom:message?.name=="error" ? '2px solid red' : '2px solid green', textAlign:'center',margin:'10 auto', display:'block'}}><span>{message.body}</span></div> : false
+                    message ? <div style={{ borderBottom:message?.name=="error" ? '2px solid red' : '2px solid green', textAlign:'center',margin:'20 0 20 0', display:'block', fontSize:'30px'}}><span>{message.body}</span></div> : false
                     
                 }
       </Dialog>
