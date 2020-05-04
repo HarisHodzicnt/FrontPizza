@@ -23,7 +23,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
 import { useMediaQuery } from 'react-responsive'
-
+import {api} from './environment'
 const useStyles = makeStyles((theme) =>
 createStyles({  
   paperDesktop: {
@@ -97,7 +97,7 @@ function SignInComponent(props) {
   },[])
 
   const [show, setVisibility] = React.useState()
-
+  const [message, setMessage]=React.useState()
   const [data, setData] = useState({
                                         Email: props.loginData?.Email ||  "",
                                         Password: props.loginData?.Password || "",
@@ -111,7 +111,7 @@ function SignInComponent(props) {
 
   const handleSubmit = (e) => {
 
-    fetch(`https://localhost:44309/account/login`,{
+    fetch(`${api}/account/login`,{
     method:'POST',
     headers:{
                 "Content-Type":'application/json'
@@ -133,8 +133,8 @@ function SignInComponent(props) {
             props.setSignIn(y);
             props.history.push("/home")
           }
-          
-        }).catch(e=>console.log(e))
+
+    }).catch(e => { document.getElementById("Email").focus(); setMessage("Email or Password are not correct.") })
 
      
   }  
@@ -226,7 +226,12 @@ function SignInComponent(props) {
             <FormControlLabel  style={{color:'blue'}} 
                 control={<Checkbox  id="RememberMe" checked={data.RememberMe} onChange={handleChange}/>}
                 label="Remember me"
-            ></FormControlLabel>
+                  ></FormControlLabel>
+                  {
+                      message ? <div>
+                          <h4 style={{ color: 'red', width: '70%', margin: '0 auto', textAlign: 'center' }}>{message}</h4>
+                      </div> : false
+                  }
         <Button
             fullWidth
             variant="contained"
@@ -237,6 +242,7 @@ function SignInComponent(props) {
           >
             Sign In
           </Button>
+                     
           <Grid container>
             <Grid item xs>
               <Link href="/forgotPassword" variant="body2">

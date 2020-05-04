@@ -15,28 +15,18 @@ function App() {
 
   const [cart, setCart]=useState(JSON.parse(sessionStorage.getItem("cart")) || [])
   const [isLoggedIn, setLoggedIn]=useState(localStorage.getItem("loginData"))
+    const [openMenu, setMenu] = useState(localStorage.getItem(false))
 
-  
   sessionStorage.setItem("cart",JSON.stringify(cart));
 
 
-
-  const deleteItem=(item)=>{
-    let array = cart.filter(obj=>obj.FoodId !== item.FoodId); 
-    console.log(cart)
-    console.log(item)
-
-    setCart(array)
-    sessionStorage.setItem("cart",JSON.stringify(cart));
-
-  }
   return (
     <div className="App">
       <Router>
-      <header className="App-section-header ">
-        <Route render={(props)=><Navigation {...props} isSignIn={isLoggedIn} cart={cart} setCart={setCart} deleteFromCart={(item)=>deleteItem(item)}/>}/>
+              <header className="App-section-header ">
+                  <Route render={(props) => <Navigation {...props} isSignIn={isLoggedIn} openMenu={openMenu} setMenu={() => setMenu(!openMenu)} cart={cart} setCart={setCart} deleteFromCart={(index) => setCart(cart.splice(index, 1))} />} />
         </header>
-        <section className="App-section-main">
+              <section className="App-section-main" onClick={() => setMenu(false)}>
         <Switch>
         <Route path="/admin" component={Admin}></Route>
         <Route  path="/signIn" render={(props)=><SignInComponent {...props} setSignIn={(user)=>{setLoggedIn(user)}}/>}/>
@@ -46,7 +36,7 @@ function App() {
           <hr id="AboutUs"/>
           <AboutUs/>
           <hr style={{margin:'50px auto'}} id="Menu"/>
-          <OrderForm setCartFn={(item)=>{setCart([...cart, item])}} deleteFromCar={(item)=>{let array = cart.filter(obj=>obj.id !== item.Id); setCart(array)}}/>
+                          <OrderForm setCartFn={(item) => { setCart([...cart, item]) }} deleteFromCart={(index) => setCart(cart.splice(index, 1))} />
         </Route>
         <Route component={NoMatch}/>
         </Switch>

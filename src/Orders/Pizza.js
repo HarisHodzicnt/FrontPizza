@@ -28,14 +28,14 @@ export default function Pizza(props) {
           height="140"
           style={{maxHeight:'200px'}}
           image={props.image}
-          title={props.Name}
+          title={props.item?.Name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {props.image?.name}
+            {props.item?.Name}
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
-          {props.image?.description}
+          {props.item?.Material}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -50,7 +50,7 @@ export default function Pizza(props) {
                             </Button>
                           </div>   :
                           <div>
-                          <Button size="small" color="primary" style={{margin:'0 auto'}} onClick={()=>props.setPizza(props.item)}>
+                          <Button size="small" color="primary" style={{ margin: '0 auto', background: 'rgba(169,169,169,0.4)', padding:'10px'}} onClick={()=>props.setPizza(props.item)}>
                                     Select
                                   </Button>
                                   <Button size="small" color="primary" style={{margin:'0 auto'}} onClick={()=>props.addToCheckOut(props.item)}>

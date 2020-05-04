@@ -6,6 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import {api} from './environment'
+import TextField from '@material-ui/core/TextField';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -21,7 +24,7 @@ export default function Chart(props) {
       if(allOrders!=null)
       {
       let orderId=0;
-       await fetch(`https://localhost:44309/order`,{
+       await fetch(`${api}/order`,{
             method:'POST',
             headers:{
                         "Content-Type":'application/json'
@@ -34,7 +37,7 @@ export default function Chart(props) {
         allOrders.map(async order=>{
           order.OrderId = orderId==0 ? 0 : orderId;
 
-          await fetch(`https://localhost:44309/order/orderDetails`,{
+          await fetch(`${api}/order/orderDetails`,{
             method:'POST',
             headers:{
                         "Content-Type":'application/json'
@@ -92,7 +95,7 @@ export default function Chart(props) {
       >
         {
           allOrders ? <div>
-                                  <DialogTitle id="alert-dialog-slide-title" style={{textAlign:'center'}}><h1>{headerToDisplay}</h1></DialogTitle>
+                                  <DialogTitle id="alert-dialog-slide-title" style={{textAlign:'center'}}><p>{headerToDisplay}</p></DialogTitle>
                                   {
                                     !props.admin ?  <p style={{width:'90%', margin:'0 auto', fontSize:'19px', marginTop:'-36px', textAlign:'right'}}>ps. 20$ + take the discount of 10%</p> : false
                                   }
@@ -103,7 +106,7 @@ export default function Chart(props) {
         <DialogContent style={{minWidth:'60vmin'}}>
           <DialogContentText id="alert-dialog-slide-description">
                {
-                   allOrders ? allOrders.map(item=>{
+                   allOrders ? allOrders.map((item, index)=>{
                                                         if(numberOrder.indexOf(item.OrderId)==-1)
                                                            numberOrder.push(item.OrderId)
 
@@ -117,14 +120,32 @@ export default function Chart(props) {
                                                                       <span><b>Size: </b> {item?.Size}</span>
                                                                       <span style={{marginLeft:'15px'}}><b>Quantity: </b> {item?.Quantity==null ? 1 : item?.Quantity}</span>
                                                                   </div>
-                                                                      <p><b>Address:</b> {item?.Address}</p>
+                                                                  {
+                                                                      (item.Address && !props.admin) ? <p><b>Address:</b> {item?.Address}</p> :
+                                                                                      <TextField
+                                                                                          id="Address"
+                                                                                          label="Adress to be delivered"
+                                                                                          value={item.Address}
+                                                                                          style={{ marginTop: '20px' }}
+                                                                                          fullWidth
+                                                                                          placeholder="Insert Text"
+                                                                              helperText="Trg play 1/29 Boston #444"
+                                                                              onChange={(e) => { item.Address=e.target.value }}
+                                                                                          margin="normal"
+                                                                                          InputLabelProps={{
+                                                                                              shrink: true,
+                                                                                          }}
+                                                                                          variant="outlined"
+                                                                                      />
+
+                                                                  }
                                                                       <p><b>Aditional Comment: </b><br/> {item?.Aditional}</p>
 
                                                               </div>
                                                               <div>
                                                                   <span style={{textAlign:'left'}}>Price: {item?.Price} $</span><br/><br/>
                                                                   {
-                                                                    !props.admin ? <Button onClick={()=>props.delete(item)} style={{padding:'5px 10px', color:'white', background:'red'}}>Delete</Button> : false
+                                                                    !props.admin ? <Button onClick={()=>props.delete(index)} style={{padding:'5px 10px', color:'white', background:'red'}}>Delete</Button> : false
                                                                                    
                                                                   }
                                                                   

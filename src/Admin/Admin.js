@@ -14,7 +14,9 @@ import PublishIcon from '@material-ui/icons/Publish';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ListOfItemDialog from './ListOfItemDialog';
+import { api, apiImage, validate } from '../environment'
 import './Admin.css'
+
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -32,7 +34,7 @@ const Admin=(props)=>{
 
 
     const getItems=async ()=>{
-        fetch("https://localhost:44309/food",{
+        fetch(`${api}/food`,{
             method:"GET",
             header:{
                 "Content-Type":'application/json'
@@ -78,7 +80,7 @@ const Admin=(props)=>{
                     ob[prop]=editItem[prop].split(",")
                 
                 else if(prop=="PhotoPath" && editItem[prop])
-                setImageUploaded(`https://localhost:44309/Images/${editItem[prop]}` )
+                setImageUploaded(`${apiImage}/Images/${editItem[prop]}` )
                 
                 else
                 ob[prop]=editItem[prop]
@@ -124,7 +126,17 @@ const Admin=(props)=>{
       const [succMessage, setSuccesMess]=useState();
       const [isOrder, setIsOrder]=useState(false);
 
-      const handleSubmit = () => {
+    const handleSubmit = () => {
+
+        const checkValidation = validate(item, sizes, materials)
+        if (checkValidation.message) {
+            setError(checkValidation.message)
+            document.getElementById(checkValidation.prop).focus();
+            setTimeout(() => {
+                setError(null);
+            }, 2000)
+            return;
+        }
         const formData = new FormData()
         for (const prop in item ) {
             if(item[prop]!="")
@@ -149,7 +161,7 @@ const Admin=(props)=>{
         }
 
         const method = item?.Id > 0 ? "PUT" :"POST" 
-        fetch(`https://localhost:44309/food`, {
+        fetch(`${api}/food`, {
             method: method,
             body: formData,
             mode:'cors'

@@ -11,7 +11,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import { api, apiImage } from '../environment'
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -31,7 +31,7 @@ const OrderForm=(props)=>{
 
     
     const getItems=async ()=>{
-        fetch("https://localhost:44309/food",{
+        fetch(`${api}/food`,{
             method:"GET",
             header:{
                 "Content-Type":'application/json'
@@ -88,23 +88,59 @@ const OrderForm=(props)=>{
             return;
           }
 
-          if(selectedItem?.Name && selectedItem?.Quantity)
-          {
+          for (var prop in selectedItem) {
+
+              switch (prop) {
+              
+}
+                 if (prop == "Photo" || prop == "PhotoPath") {
+                         continue;
+                     }
+                  else if (selectedItem[prop] == "" || selectedItem[prop] == null) {
+                      document.getElementById(prop).focus();
+                      errorMess();
+                      return;
+                  }
+                  else if (!selectedItem?.Quantity) {
+                      document.getElementById("Quantity").focus();
+                      errorMess();
+                      return;
+                 }
+                 else if (!selectedItem?.Quantity) {
+                     document.getElementById("Quantity").focus();
+                     errorMess();
+                     return;
+                 }
+                 else if (!selectedItem?.Address) {
+                     document.getElementById("Address").focus();
+                     errorMess();
+                     return;
+                 }
+      
+                  else if (selectedItem.Size.split(",").length>1) {
+                      document.getElementById("Size").focus();
+                      errorMess();
+                      return;
+                  }   
+                  
+          }
+          console.log(selectedItem)
+
+          if (Object.keys(selectedItem).length !== 0) {
               props.setCartFn(selectedItem)
               setSuccesMess(true)
-              setItem({...selectedItem, Quantity:null, Size:null, Name:""})
-              setTimeout(()=>{
+              setItem({ ...selectedItem, Quantity: null, Size: null, Name: "" })
+              setTimeout(() => {
                   setSuccesMess(false);
-              },2000)
-              return;
+              }, 1200)
           }
+              
+  
+              
+                errorMess();              
 
-          errorMess();
-         
-                  
       };
 
-      console.log(selectedItem)
     return(<div className="flex" style={{flexWrap:'wrap', marginTop:'100px'}}>
 
             <div className="orderForm">
@@ -195,7 +231,7 @@ const OrderForm=(props)=>{
                 </h2>
                 <div style={{marginTop:'80px', textAlign:'center'}}>
                 {
-                    items?.map(item=><Pizza item={item}  Name={item.Name} addToCheckOut={(item)=>{props.setCartFn(item)}}  setPizza={(item)=>{setItem(item)}} image={item?.PhotoPath ? `https://localhost:44309/Images/${item?.PhotoPath}` : "https://via.placeholder.com/640x360"}/>)
+                    items?.map(item=><Pizza item={item}  addToCheckOut={(item)=>{props.setCartFn(item)}}  setPizza={(item)=>{setItem(item)}} image={item?.PhotoPath ? `${apiImage}/Images/${item?.PhotoPath}` : "https://via.placeholder.com/640x360"}/>)
                 } 
                 </div>
   

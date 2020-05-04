@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Link from '@material-ui/core/Link';
 import { useMediaQuery } from 'react-responsive'
-
+import {api} from './environment'
 
 
 
@@ -86,7 +86,7 @@ function SignUpComponent(props) {
   const handleSubmit =async () => {
     console.log(data)
 
-    fetch(`https://localhost:44309/account/register`,{
+    fetch(`${api}/account/register`,{
         method:'POST',
         headers:{
                     "Content-Type":'application/json'

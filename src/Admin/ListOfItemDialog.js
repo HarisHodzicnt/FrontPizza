@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Pizza from '../Orders/Pizza';
 import Cart from '../Cart'
+import { api, apiImage } from '../environment'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -19,7 +20,7 @@ export default function ListOfItems(props) {
     const [cartOpen, setCartClose]=useState(false)
 
     const deleteItem=(id)=>{
-        fetch(`https://localhost:44309/food/delete/${id}`,{
+        fetch(`${api}/food/delete/${id}`,{
             method:"GET",
             header:{
                 "Content-Type":'application/json'
@@ -36,7 +37,7 @@ export default function ListOfItems(props) {
 
 
     const getOrders=async ()=>{
-      fetch("https://localhost:44309/order",{
+      fetch(`${api}/order`,{
           method:"GET",
           header:{
               "Content-Type":'application/json'
@@ -74,7 +75,7 @@ export default function ListOfItems(props) {
     },[])
  
   const handleDelete=(order)=>{
-    fetch(`https://localhost:44309/order/delete/${order.OrderId}`,{
+    fetch(`${api}/order/delete/${order.OrderId}`,{
       method:"GET",
       header:{
           "Content-Type":'application/json'
@@ -112,7 +113,7 @@ export default function ListOfItems(props) {
                {
                  props.openOrders ? <div>
                                         {
-                                          orders  ? <Cart close={props.close} items={orders} admin={true} open={props.open} setCart={props.setCart} delete={(item)=>handleDelete(item)}/> : false
+                                          orders  ? <Cart close={props.close} items={orders} admin={true} open={props.open} setCart={props.setCart} delete={(index)=>handleDelete(index)}/> : false
                                         }
                                   </div>  :
                  
@@ -121,7 +122,7 @@ export default function ListOfItems(props) {
                                     {
                                       props.items?.map(item=>{
                                           console.log(item)
-                                                return <Pizza admin={props.admin} Name={item.Name} addToCheckOut={(hej)=>console.log(hej)} delete={()=>deleteItem(item.Id)} edit={()=>props.editItem(item)} setPizza={(hej)=>console.log(hej)} image={item?.PhotoPath ? `https://localhost:44309/Images/${item?.PhotoPath}` : "https://via.placeholder.com/640x360"}/>
+                                          return <Pizza admin={props.admin} item={item} addToCheckOut={(hej)=>console.log(hej)} delete={()=>deleteItem(item.Id)} edit={()=>props.editItem(item)} setPizza={(hej)=>console.log(hej)} image={item?.PhotoPath ? `${apiImage}/Images/${item?.PhotoPath}` : "https://via.placeholder.com/640x360"}/>
                                       })
                                     }
                               </div> 
